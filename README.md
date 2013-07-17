@@ -3,7 +3,7 @@ python-ctrldaemon
 
 *Service command wrapper for Python.*
 
-Use
+Usage
 -------------------------------
 
 **Create object**
