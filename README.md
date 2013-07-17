@@ -1,4 +1,4 @@
-python-pidmonitor
+python-ctrldaemon
 =================
 
-Services monitor for Linux, written in Python
+Service command wrapper for Python.
