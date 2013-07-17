@@ -19,6 +19,10 @@ class TestCtrlDaemon(unittest.TestCase):
     def test_restart_service(self):
         self.assertTrue(self.ctrl_daemon.restart())
 
+    def test_get_memory_usage(self):
+        self.ctrl_daemon.start()
+        self.assertGreater(self.ctrl_daemon.get_memory_usage(), 0)
+
 if __name__ == "__main__":
     unittest.main()
 

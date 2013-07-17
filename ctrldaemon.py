@@ -30,6 +30,7 @@ import subprocess as sub
 from psutil import (Process, _error)
 from copy import deepcopy
 import re
+import platform
 
 
 class ControlDaemon(object):
@@ -46,11 +47,23 @@ class ControlDaemon(object):
         """
         Execute the command services
         """
-        action = sub.Popen("sudo service {} {}".format(str(self.daemon_name),
-                                                       str(action_string)),
-                           stdout=sub.PIPE, shell=True)
+        command = ['sudo', 'service', str(self.daemon_name),
+                   str(action_string)]
+        action = sub.Popen(' '.join(command), stdout=sub.PIPE, shell=True)
         (output, error) = action.communicate()
         return error or output
+
+    def know_pid_centos(self, pid):
+        proc = Process(int(pid[0]))
+        threads = proc.get_threads()
+        for thread in threads:
+            try:
+                new_proc = Process(int(thread[0]))
+                self.process.append(new_proc)
+                pid.append(thread[0])
+            except _error.NoSuchProcess:
+                pass
+        return pid
 
     def know_pid(self):
         """
@@ -61,12 +74,16 @@ class ControlDaemon(object):
         if pid:
             tmp_pid = deepcopy(pid)
             self.process = list()
-            for p in tmp_pid:
-                try:
-                    proc = Process(int(p))
-                    self.process.append(proc)
-                except _error.NoSuchProcess:
-                    pid.remove(p)
+            distro = platform.dist()
+            if distro[0] == 'fedora':
+                for p in tmp_pid:
+                    try:
+                        proc = Process(int(p))
+                        self.process.append(proc)
+                    except _error.NoSuchProcess:
+                        pid.remove(p)
+            else:
+                pid = self.know_pid_centos(tmp_pid)
         return pid
 
     def do_action(self, action):
@@ -88,3 +105,13 @@ class ControlDaemon(object):
 
     def stop(self):
         return self.do_action(2)
+
+    def get_memory_usage(self):
+        """
+        Return memory rss usage
+        """
+        mem = 0
+        for p in self.process:
+            mem += p.get_memory_info()[0]/(1024**2)
+        return mem
+
