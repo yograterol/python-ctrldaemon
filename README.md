@@ -1,4 +1,46 @@
-python-pidmonitor
+python-ctrldaemon
 =================
 
-Services monitor for Linux, written in Python
+*Service command wrapper for Python.*
+
+Usage
+-------------------------------
+
+**Create object**
+
+```python
+from ctrldaemon import ControlDaemon
+obj = ControlDaemon("service") # Example "httpd" (Apache)
+```
+
+**Start service**
+
+```python
+from ctrldaemon import ControlDaemon
+obj = ControlDaemon("service") # Example "httpd" (Apache)
+obj.start()
+```
+
+**Stop service**
+
+```python
+from ctrldaemon import ControlDaemon
+obj = ControlDaemon("service") # Example "httpd" (Apache)
+obj.stop()
+```
+
+**Restart service**
+
+```python
+from ctrldaemon import ControlDaemon
+obj = ControlDaemon("service") # Example "httpd" (Apache)
+obj.restart()
+```
+
+**Memory**
+
+```python
+from ctrldaemon import ControlDaemon
+obj = ControlDaemon("service") # Example "httpd" (Apache)
+obj.get_memory_usage()
+```
