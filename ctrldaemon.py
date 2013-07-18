@@ -106,6 +106,17 @@ class ControlDaemon(object):
     def stop(self):
         return self.do_action(2)
 
+    def get_status(self):
+        status_dict = {'running': True, 'stopped': False, 'dead': False}
+        pattern = r'\b(?:%s)\b' % '|'.join(status_dict.keys())
+        regex = re.compile(pattern)
+        status_service = self.exec_service(self.actions[3])
+        result = regex.search(status_service)
+        if result:
+            return status_dict[result.group()]
+        else:
+            return False
+
     def get_memory_usage(self):
         """
         Return memory rss usage
