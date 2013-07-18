@@ -121,8 +121,14 @@ class ControlDaemon(object):
         """
         Return memory rss usage
         """
-        mem = 0
-        for p in self.process:
-            mem += p.get_memory_info()[0]/(1024**2)
-        return mem
+        if self.get_status():
+            # Research process thread
+            self.pid = self.know_pid()
+            mem = 0
+            for p in self.process:
+                mem += p.get_memory_info()[0]/(1024**2)
+            return mem
+        else:
+            return False
+
 
