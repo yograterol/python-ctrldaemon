@@ -43,6 +43,9 @@ class ControlDaemon(object):
         self.daemon_name = daemon_name
         self.regex = re.compile(self.pattern)
 
+    def __repr__(self):
+        return self.daemon_name
+
     def exec_service(self, action_string):
         """
         Execute the command services

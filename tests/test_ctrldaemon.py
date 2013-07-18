@@ -29,6 +29,10 @@ class TestCtrlDaemon(unittest.TestCase):
         # Is running service?
         self.assertTrue(self.ctrl_daemon.get_status())
 
+    def test_repr(self):
+        service = 'httpd'
+        self.assertEqual(str(service), str(self.ctrl_daemon))
+
 if __name__ == "__main__":
     unittest.main()
 
