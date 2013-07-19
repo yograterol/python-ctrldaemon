@@ -1,2 +1,4 @@
-from ctrldaemon import ControlDaemon
+import ctrldaemon
+from ctrldaemon import *
+
 version = 0.1
