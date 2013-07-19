@@ -90,28 +90,39 @@ class ControlDaemon(object):
         return pid
 
     def do_action(self, action):
+        """
+        Do a action, with a action number than
+        correspond a index in self.actions list.
+
+        Return the status service
+        """
         self.exec_service(self.actions[action])
         self.pid = self.know_pid()
-
-        if self.process:
-            return True
-        elif not self.process and action == 2:
-            return True
-        return False
+        return self.get_status()
 
     def start(self):
+        """
+        Start the service
+        """
         return self.do_action(0)
 
     def restart(self):
+        """
+        Stop the service
+        """
         return self.do_action(1)
 
     def stop(self):
-        return self.do_action(2)
+        """
+        Stop the service
+        """
+        return not self.do_action(2)
 
     def get_status(self):
         status_dict = {'running': True, 'stopped': False, 'dead': False}
         pattern = r'\b(?:%s)\b' % '|'.join(status_dict.keys())
         regex = re.compile(pattern)
+        # Get status from service command
         status_service = self.exec_service(self.actions[3])
         result = regex.search(status_service)
         if result:
@@ -130,5 +141,4 @@ class ControlDaemon(object):
                 mem += p.get_memory_info()[0]/(1024**2)
             return mem
         return False
-
 

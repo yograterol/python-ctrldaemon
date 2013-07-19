@@ -1,3 +1,4 @@
+"""
 Copyright (c) 2013, Yohan Graterol
 All rights reserved.
 
@@ -11,7 +12,7 @@ are permitted provided that the following conditions are met:
   list of conditions and the following disclaimer in the documentation and/or
   other materials provided with the distribution.
 
-  Neither the name of the Yohan Graterol nor the names of its
+  Neither the name of the Yohan Graterol  nor the names of its
   contributors may be used to endorse or promote products derived from
   this software without specific prior written permission.
 
@@ -25,3 +26,29 @@ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
 ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+"""
+
+from setuptools import setup, find_packages
+
+f = open('README.md')
+try:
+    README = f.read()
+finally:
+    f.close()
+
+setup (name='python-ctrldaemon',
+       version="0.1",
+       description="Service command wrapper for Python.",
+       long_description=README,
+       packages=find_packages(),
+       test_suite='nose.collector',
+       author="Yohan Graterol",
+       author_email="yograterol@fedoraproject.org",
+       download_url="https://github.com/yograterol/python-ctrldaemon",
+       license="BSD License",
+       url="http://www.yograterol.me",
+       zip_safe=True,
+       tests_require=['nose',],
+
+       )
+
