@@ -49,6 +49,6 @@ setup (name='ctrldaemon',
        url="http://www.yograterol.me",
        zip_safe=True,
        tests_require=['nose',],
-
+       install_requires=['psutil'],
        )
 
