@@ -36,11 +36,11 @@ try:
 finally:
     f.close()
 
-setup (name='python-ctrldaemon',
+setup (name='ctrldaemon',
        version="0.1",
        description="Service command wrapper for Python.",
        long_description=README,
-       packages=find_packages(),
+       packages=find_packages(exclude="tests"),
        test_suite='nose.collector',
        author="Yohan Graterol",
        author_email="yograterol@fedoraproject.org",
