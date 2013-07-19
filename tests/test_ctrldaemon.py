@@ -6,6 +6,7 @@ class TestCtrlDaemon(unittest.TestCase):
 
     def setUp(self):
         self.ctrl_daemon = ControlDaemon("httpd")
+        self.ctrl_daemon_fail = ControlDaemon("service_fail")
 
     def test_start_service(self):
         self.assertTrue(self.ctrl_daemon.start())
@@ -28,6 +29,18 @@ class TestCtrlDaemon(unittest.TestCase):
         self.ctrl_daemon.start()
         # Is running service?
         self.assertTrue(self.ctrl_daemon.get_status())
+
+    def test_start_service_fail(self):
+        self.ctrl_daemon_fail.start()
+        self.assertFalse(self.ctrl_daemon_fail.get_status())
+
+    def test_restart_service_fail(self):
+        self.ctrl_daemon_fail.restart()
+        self.assertFalse(self.ctrl_daemon_fail.get_status())
+
+    def test_stop_service_fail(self):
+        self.ctrl_daemon_fail.stop()
+        self.assertFalse(self.ctrl_daemon_fail.get_status())
 
     def test_repr(self):
         service = 'httpd'

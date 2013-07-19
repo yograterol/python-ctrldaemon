@@ -42,6 +42,7 @@ class ControlDaemon(object):
         self.actions = ["start", "restart", "stop", "status"]
         self.daemon_name = daemon_name
         self.regex = re.compile(self.pattern)
+        self.process = list()
 
     def __repr__(self):
         return self.daemon_name
@@ -76,7 +77,6 @@ class ControlDaemon(object):
         pid = self.regex.findall(result_service)
         if pid:
             tmp_pid = deepcopy(pid)
-            self.process = list()
             distro = platform.dist()
             if distro[0] == 'fedora':
                 for p in tmp_pid:
@@ -97,8 +97,7 @@ class ControlDaemon(object):
             return True
         elif not self.process and action == 2:
             return True
-        else:
-            return False
+        return False
 
     def start(self):
         return self.do_action(0)
@@ -117,8 +116,7 @@ class ControlDaemon(object):
         result = regex.search(status_service)
         if result:
             return status_dict[result.group()]
-        else:
-            return False
+        return False
 
     def get_memory_usage(self):
         """
@@ -131,7 +129,6 @@ class ControlDaemon(object):
             for p in self.process:
                 mem += p.get_memory_info()[0]/(1024**2)
             return mem
-        else:
-            return False
+        return False
 
 
