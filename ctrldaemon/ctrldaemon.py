@@ -78,6 +78,7 @@ class ControlDaemon(object):
         if pid:
             tmp_pid = deepcopy(pid)
             distro = platform.dist()
+            self.process = list()
             if distro[0] == 'fedora':
                 for p in tmp_pid:
                     try:
@@ -108,7 +109,7 @@ class ControlDaemon(object):
 
     def restart(self):
         """
-        Stop the service
+        Restart the service
         """
         return self.do_action(1)
 
