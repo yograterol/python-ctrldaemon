@@ -27,7 +27,10 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 import subprocess as sub
-from psutil import (Process, _error)
+try:
+    from psutil import (Process, _error)
+except ImportError:
+    from psutil import (Process, error)
 from copy import deepcopy
 import re
 import platform
