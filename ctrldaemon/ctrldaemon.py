@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 """
 Copyright (c) 2013 Yohan Graterol <yograterol@fedoraproject.org>
 All rights reserved.
@@ -30,7 +33,6 @@ import subprocess as sub
 from psutil import (Process, _error)
 from copy import deepcopy
 import re
-import platform
 
 
 class ControlDaemon(object):
@@ -51,43 +53,31 @@ class ControlDaemon(object):
         """
         Execute the command services
         """
-        command = ['sudo', 'service', str(self.daemon_name),
-                   str(action_string)]
+        if action_string is 'pid':
+            command = ['pgrep', str(self.daemon_name)]
+        else:
+            command = ['sudo', 'service', str(self.daemon_name),
+                       str(action_string)]
         action = sub.Popen(' '.join(command), stdout=sub.PIPE, shell=True)
         (output, error) = action.communicate()
         return error or output
-
-    def know_pid_centos(self, pid):
-        proc = Process(int(pid[0]))
-        threads = proc.get_threads()
-        for thread in threads:
-            try:
-                new_proc = Process(int(thread[0]))
-                self.process.append(new_proc)
-                pid.append(thread[0])
-            except _error.NoSuchProcess:
-                pass
-        return pid
 
     def know_pid(self):
         """
         Return the pid numbers of the service.
         """
-        result_service = self.exec_service(self.actions[3])
+        result_service = self.exec_service('pid')
+
         pid = self.regex.findall(result_service)
         if pid:
             tmp_pid = deepcopy(pid)
-            distro = platform.dist()
             self.process = list()
-            if distro[0] == 'fedora':
-                for p in tmp_pid:
-                    try:
-                        proc = Process(int(p))
-                        self.process.append(proc)
-                    except _error.NoSuchProcess:
-                        pid.remove(p)
-            else:
-                pid = self.know_pid_centos(tmp_pid)
+            for p in tmp_pid:
+                try:
+                    proc = Process(int(p))
+                    self.process.append(proc)
+                except _error.NoSuchProcess:
+                    pid.remove(p)
         return pid
 
     def do_action(self, action):
@@ -139,7 +129,6 @@ class ControlDaemon(object):
             self.pid = self.know_pid()
             mem = 0
             for p in self.process:
-                mem += p.get_memory_info()[0]/(1024**2)
+                mem += p.get_memory_info()[0] / (1024 ** 2)
             return mem
         return False
-

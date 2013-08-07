@@ -40,19 +40,19 @@ setup (name='ctrldaemon',
        version="0.1",
        description="Service command wrapper for Python.",
        long_description=README,
-       packages=['ctrldaemon'],
+       packages=find_packages('.'),
+       include_package_data=True,
        test_suite='nose.collector',
        author="Yohan Graterol",
        author_email="yograterol@fedoraproject.org",
        download_url="https://github.com/yograterol/python-ctrldaemon",
        license="BSD License",
        url="http://www.yograterol.me",
-       zip_safe=True,
+       zip_safe=False,
        package_data={
                  'ctrldaemon': ['LICENSE', 'README.md'],
               },
        tests_require=['nose',],
        install_requires=['psutil'],
-       include_package_data = True
        )
 
