@@ -30,7 +30,11 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 """
 import subprocess as sub
-from psutil import (Process, _error)
+from psutil import Process
+try:
+    from psutil import _error
+except ImportError:
+    from psutil import error as _error
 from copy import deepcopy
 import re
 
