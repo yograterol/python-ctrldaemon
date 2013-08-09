@@ -37,7 +37,7 @@ finally:
     f.close()
 
 setup (name='ctrldaemon',
-       version="0.1",
+       version="0.2",
        description="Service command wrapper for Python.",
        long_description=README,
        packages=find_packages('.'),
