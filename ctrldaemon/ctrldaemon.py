@@ -114,14 +114,9 @@ class ControlDaemon(object):
         return not self.do_action(2)
 
     def get_status(self):
-        status_dict = {'running': True, 'stopped': False, 'dead': False}
-        pattern = r'\b(?:%s)\b' % '|'.join(status_dict.keys())
-        regex = re.compile(pattern)
-        # Get status from service command
-        status_service = self.exec_service(self.actions[3])
-        result = regex.search(status_service)
-        if result:
-            return status_dict[result.group()]
+        self.pid = self.know_pid()
+        if self.pid:
+            return True
         return False
 
     def get_memory_usage(self):
