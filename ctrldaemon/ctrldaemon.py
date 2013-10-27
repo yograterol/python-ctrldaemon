@@ -59,6 +59,9 @@ class ControlDaemon(object):
         """
         if action_string is 'pid':
             command = ['pgrep', str(self.daemon_name)]
+        elif action_string.startswith('chkconfig'):
+            action_string = action_string.split("_")
+            command = ['chkconfig', str(self.daemon_name), action_string[1]]
         else:
             command = ['sudo', 'service', str(self.daemon_name),
                        str(action_string)]
@@ -112,6 +115,19 @@ class ControlDaemon(object):
         Stop the service
         """
         return not self.do_action(2)
+
+    def chkconfig(self, option='on'):
+        if self.start():
+            self.exec_service('chkconfig_' + option)
+            return True
+        else:
+            return False
+
+    def activate(self):
+        return self.chkconfig()
+
+    def deactivate(self):
+        return self.chkconfig('off')
 
     def get_status(self):
         self.pid = self.know_pid()
